@@ -1,6 +1,6 @@
 <p align="center">
-  <img src="https://img.shields.io/packagist/v/yourname/traffic-analytics?style=flat-square&color=3C407A" alt="Latest Version">
-  <img src="https://img.shields.io/packagist/dt/yourname/traffic-analytics?style=flat-square&color=22c55e" alt="Total Downloads">
+  <img src="https://img.shields.io/packagist/v/Jalismahamud/traffic-analytics?style=flat-square&color=3C407A" alt="Latest Version">
+  <img src="https://img.shields.io/packagist/dt/Jalismahamud/traffic-analytics?style=flat-square&color=22c55e" alt="Total Downloads">
   <img src="https://img.shields.io/badge/Laravel-10%2B%20%7C%2011%2B%20%7C%2012%2B-FF2D20?style=flat-square&logo=laravel" alt="Laravel">
   <img src="https://img.shields.io/badge/PHP-8.1%2B-777BB4?style=flat-square&logo=php" alt="PHP">
   <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License">
@@ -56,7 +56,7 @@
 ### Step 1 — Install via Composer
 
 ```bash
-composer require yourname/traffic-analytics
+composer require Jalismahamud/traffic-analytics
 ```
 
 ### Step 2 — Publish & Run Migrations
@@ -72,7 +72,7 @@ php artisan migrate
 
 ```php
 ->withMiddleware(function (Middleware $middleware) {
-    $middleware->append(\YourName\TrafficAnalytics\Http\Middleware\TrafficLogger::class);
+    $middleware->append(\Jalismahamud\TrafficAnalytics\Http\Middleware\TrafficLogger::class);
 })
 ```
 
@@ -81,7 +81,7 @@ php artisan migrate
 ```php
 protected $middleware = [
     // ...
-    \YourName\TrafficAnalytics\Http\Middleware\TrafficLogger::class,
+    \Jalismahamud\TrafficAnalytics\Http\Middleware\TrafficLogger::class,
 ];
 ```
 
@@ -90,7 +90,7 @@ protected $middleware = [
 Inside your existing admin route group in `routes/web.php`:
 
 ```php
-use YourName\TrafficAnalytics\Http\Controllers\TrafficAnalyticsController;
+use Jalismahamud\TrafficAnalytics\Http\Controllers\TrafficAnalyticsController;
 
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('traffic-dashboard', [TrafficAnalyticsController::class, 'dashboard'])->name('admin.traffic.dashboard');
@@ -236,7 +236,7 @@ Add a link to your admin navigation:
 
 ```bash
 php artisan migrate:rollback --path=database/migrations/2024_01_01_000001_create_traffic_logs_table.php
-composer remove yourname/traffic-analytics
+composer remove Jalismahamud/traffic-analytics
 ```
 
 ---
