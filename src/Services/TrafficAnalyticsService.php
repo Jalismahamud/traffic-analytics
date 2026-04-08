@@ -2,7 +2,7 @@
 
 namespace Jalismahamud\TrafficAnalytics\Services;
 
-use App\Models\TrafficLog;
+use Jalismahamud\TrafficAnalytics\Models\TrafficLog;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 

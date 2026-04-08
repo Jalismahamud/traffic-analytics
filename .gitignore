@@ -1,0 +1,22 @@
+# Development
+/.idea/
+/.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+.env.local
+.env.*.local
+
+# Dependencies
+/vendor/
+/node_modules/
+composer.phar
+
+# Testing
+/.phpunit.cache/
+/coverage/
+.phpunit.result.cache
+
+# PHP
+*.log

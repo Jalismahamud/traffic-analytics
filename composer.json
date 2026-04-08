@@ -22,20 +22,24 @@
     },
     "autoload": {
         "psr-4": {
-            "YourName\\TrafficAnalytics\\": "src/"
+            "Jalismahamud\\TrafficAnalytics\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "YourName\\TrafficAnalytics\\Tests\\": "tests/"
+            "Jalismahamud\\TrafficAnalytics\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "YourName\\TrafficAnalytics\\TrafficAnalyticsServiceProvider"
+                "Jalismahamud\\TrafficAnalytics\\TrafficAnalyticsServiceProvider"
             ]
         }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-html coverage"
     },
     "minimum-stability": "stable",
     "prefer-stable": true

@@ -2,7 +2,7 @@
 
 namespace Jalismahamud\TrafficAnalytics\Http\Middleware;
 
-use App\Models\TrafficLog;
+use Jalismahamud\TrafficAnalytics\Models\TrafficLog;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Jalismahamud\TrafficAnalytics\Http\Controllers\Admin;
+namespace Jalismahamud\TrafficAnalytics\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Services\TrafficAnalyticsService;
+use Illuminate\Routing\Controller;
+use Jalismahamud\TrafficAnalytics\Services\TrafficAnalyticsService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -17,7 +17,7 @@ class TrafficAnalyticsController extends Controller
 
     public function dashboard(): View
     {
-        return view('admin.traffic.dashboard');
+        return view('traffic-analytics::dashboard');
     }
 
     public function getChartData(Request $request): JsonResponse
