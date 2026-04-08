@@ -1,60 +1,45 @@
 <?php
 
 return [
-    /*
-    |--------------------------------------------------------------------------
-    | Table Name
-    |--------------------------------------------------------------------------
-    |
-    | Here you may specify the table name to use for storing traffic logs.
-    |
-    */
-    'table' => 'traffic_logs',
 
     /*
     |--------------------------------------------------------------------------
-    | Cache TTL
+    | Dashboard Route Prefix
     |--------------------------------------------------------------------------
-    |
-    | How long (in seconds) analytics should be cached.
-    |
+    | The URI prefix for all traffic analytics routes.
+    */
+    'route_prefix' => 'admin',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Middleware
+    |--------------------------------------------------------------------------
+    | Applied to all traffic analytics dashboard routes.
+    */
+    'middleware' => ['web', 'auth'],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cache TTL (seconds)
+    |--------------------------------------------------------------------------
+    | How long analytics query results are cached.
     */
     'cache_ttl' => 60,
 
     /*
     |--------------------------------------------------------------------------
-    | Enabled
+    | Skipped File Extensions
     |--------------------------------------------------------------------------
-    |
-    | Enable or disable traffic logging globally.
-    |
+    | Requests for these file types will NOT be logged.
     */
-    'enabled' => env('TRAFFIC_ANALYTICS_ENABLED', true),
+    'skip_extensions' => ['css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'ico', 'woff', 'woff2', 'ttf', 'map'],
 
     /*
     |--------------------------------------------------------------------------
-    | Skip Paths
+    | Skipped Path Prefixes
     |--------------------------------------------------------------------------
-    |
-    | Routes that should not be logged.
-    |
+    | Requests starting with these prefixes will NOT be logged.
     */
-    'skip_paths' => [
-        'api/*',
-        'health',
-        'status',
-    ],
+    'skip_prefixes' => ['_debugbar', 'telescope', 'horizon', 'livewire'],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Skip Extensions
-    |--------------------------------------------------------------------------
-    |
-    | File extensions that should not be logged.
-    |
-    */
-    'skip_extensions' => [
-        'css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'ico',
-        'woff', 'woff2', 'ttf', 'eot', 'otf', 'map',
-    ],
 ];
