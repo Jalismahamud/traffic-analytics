@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Jalismahamud\TrafficAnalytics\Http\Middleware;
 
 use App\Models\TrafficLog;
 use Closure;

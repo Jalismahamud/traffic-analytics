@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Jalismahamud\TrafficAnalytics\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\TrafficAnalyticsService;

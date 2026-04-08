@@ -1,5 +1,5 @@
 {
-    "name": "Jalismahamud/traffic-analytics",
+    "name": "jalismahamud/traffic-analytics",
     "description": "A Laravel package for traffic and activity logging with analytics dashboard",
     "keywords": ["laravel", "traffic", "analytics", "logging", "activity-log"],
     "type": "library",

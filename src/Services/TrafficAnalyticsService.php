@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace Jalismahamud\TrafficAnalytics\Services;
 
 use App\Models\TrafficLog;
 use Illuminate\Support\Facades\Cache;
