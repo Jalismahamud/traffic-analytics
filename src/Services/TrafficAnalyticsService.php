@@ -1,10 +1,9 @@
 <?php
-
 namespace Jalismahamud\TrafficAnalytics\Services;
 
-use Jalismahamud\TrafficAnalytics\Models\TrafficLog;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Jalismahamud\TrafficAnalytics\Models\TrafficLog;
 
 class TrafficAnalyticsService
 {
@@ -17,22 +16,22 @@ class TrafficAnalyticsService
         return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($from, $to) {
             $base = TrafficLog::dateRange($from, $to);
 
-            $total      = (clone $base)->count();
-            $unique     = (clone $base)->distinct('ip_address')->count('ip_address');
-            $avgTime    = (clone $base)->avg('response_time') ?? 0;
-            $errors     = (clone $base)->errors()->count();
-            $errorRate  = $total > 0 ? round(($errors / $total) * 100, 2) : 0;
+            $total     = (clone $base)->count();
+            $unique    = (clone $base)->distinct('ip_address')->count('ip_address');
+            $avgTime   = (clone $base)->avg('response_time') ?? 0;
+            $errors    = (clone $base)->errors()->count();
+            $errorRate = $total > 0 ? round(($errors / $total) * 100, 2) : 0;
 
             $todayTotal  = TrafficLog::today()->count();
             $todayUnique = TrafficLog::today()->distinct('ip_address')->count('ip_address');
 
             return [
-                'total_requests'   => $total,
-                'unique_visitors'  => $unique,
-                'avg_response_time'=> round($avgTime, 2),
-                'error_rate'       => $errorRate,
-                'today_requests'   => $todayTotal,
-                'today_unique'     => $todayUnique,
+                'total_requests'    => $total,
+                'unique_visitors'   => $unique,
+                'avg_response_time' => round($avgTime, 2),
+                'error_rate'        => $errorRate,
+                'today_requests'    => $todayTotal,
+                'today_unique'      => $todayUnique,
             ];
         });
     }
@@ -162,6 +161,58 @@ class TrafficAnalyticsService
         }
 
         return implode("\n", $lines);
+    }
+
+    public function getDeletedCount(): int
+    {
+        $cacheKey = "traffic_deleted_count";
+
+        return Cache::remember($cacheKey, self::CACHE_TTL, function () {
+            return TrafficLog::where('created_at', '<', now()->subDays(self::RETENTION_DAYS))
+                ->count();
+        });
+    }
+
+    public function clearOldLogs(?int $days = null): int
+    {
+        $retentionDays = $days ?? self::RETENTION_DAYS;
+
+        $deleted = TrafficLog::where('created_at', '<', now()->subDays($retentionDays))
+            ->delete();
+
+        $this->clearAllCaches();
+
+        return $deleted;
+    }
+
+    public function clearAllLogs(): int
+    {
+        $deleted = TrafficLog::count();
+
+        TrafficLog::truncate();
+
+        $this->clearAllCaches();
+
+        return $deleted;
+    }
+
+    private function clearAllCaches(): void
+    {
+
+        $patterns = [
+            'traffic_summary_*',
+            'traffic_top_urls_*',
+            'traffic_status_*',
+            'traffic_over_time_*',
+            'traffic_top_ips_*',
+            'traffic_methods_*',
+            'traffic_deleted_count',
+        ];
+
+        foreach ($patterns as $pattern) {
+            Cache::forget($pattern);
+        }
+
     }
 
     private function shortenUrl(string $url): string

@@ -37,6 +37,8 @@
 [data-theme="dark"] .ta-filter-bar input { background: #2d3748; border-color: var(--ta-border); color: var(--ta-text); }
 [data-theme="dark"] .ta-table tr:hover { background: rgba(255,255,255,.03); }
 [data-theme="dark"] .ta-skeleton { background: linear-gradient(90deg, #2d3748 25%, #3a4556 50%, #2d3748 75%); }
+[data-theme="dark"] .ta-modal { background: rgba(0,0,0,.85); }
+[data-theme="dark"] .ta-modal-content { background: var(--ta-card-bg); border-color: var(--ta-border); }
 
 * { box-sizing: border-box; }
 
@@ -185,6 +187,20 @@
 }
 .ta-muted-text { font-size: 12px; color: var(--ta-muted); }
 
+/* NEW: Clickable delete card */
+.ta-delete-card {
+    cursor: pointer;
+    user-select: none;
+}
+.ta-delete-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(239,68,68,.2);
+    border-color: var(--ta-danger);
+}
+.ta-delete-card:active {
+    transform: translateY(-2px);
+}
+
 .ta-charts-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -280,6 +296,153 @@
 .method-PATCH  { background: rgba(245,158,11,.12); color: #d97706; }
 .method-DELETE { background: rgba(239,68,68,.12);  color: #dc2626; }
 
+/* Modal Styles */
+.ta-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,.6);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+.ta-modal.show {
+    display: flex;
+}
+.ta-modal-content {
+    background: var(--ta-card-bg);
+    border: 2px solid var(--ta-border);
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+    animation: taModalSlide .3s ease-out;
+}
+@keyframes taModalSlide {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+.ta-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.ta-modal-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+.ta-modal-icon-danger {
+    background: rgba(239,68,68,.12);
+    color: var(--ta-danger);
+}
+.ta-modal-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--ta-text);
+    margin: 0;
+}
+.ta-modal-body {
+    margin-bottom: 24px;
+}
+.ta-modal-text {
+    font-size: 14px;
+    color: var(--ta-muted);
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+.ta-modal-warning {
+    background: rgba(239,68,68,.08);
+    border-left: 3px solid var(--ta-danger);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--ta-text);
+    margin-top: 12px;
+}
+.ta-modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+.ta-modal-btn {
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all .2s;
+}
+.ta-modal-btn-cancel {
+    background: var(--ta-border);
+    color: var(--ta-text);
+}
+.ta-modal-btn-cancel:hover {
+    background: var(--ta-muted);
+}
+.ta-modal-btn-danger {
+    background: var(--ta-danger);
+    color: #fff;
+}
+.ta-modal-btn-danger:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239,68,68,.3);
+}
+.ta-modal-btn-danger:active {
+    transform: translateY(0);
+}
+
+/* Radio Group */
+.ta-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 16px 0;
+}
+.ta-radio-option {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border: 2px solid var(--ta-border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all .2s;
+}
+.ta-radio-option:hover {
+    border-color: var(--ta-primary);
+    background: rgba(60,64,122,.03);
+}
+.ta-radio-option input[type="radio"] {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+.ta-radio-option input[type="radio"]:checked {
+    accent-color: var(--ta-danger);
+}
+.ta-radio-label {
+    flex: 1;
+}
+.ta-radio-label-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ta-text);
+    margin-bottom: 2px;
+}
+.ta-radio-label-desc {
+    font-size: 12px;
+    color: var(--ta-muted);
+}
+
 @media (max-width: 900px) {
     .ta-charts-grid   { grid-template-columns: 1fr; }
     .ta-charts-grid-3 { grid-template-columns: 1fr; }
@@ -357,8 +520,10 @@
             ['icon'=>'fa-circle-exclamation','color'=>'danger','label'=>'Error Rate','id'=>'mErrorRate','sub'=>'status ≥ 400'],
             ['icon'=>'fa-calendar-day','color'=>'warning','label'=>'Today Requests','id'=>'mToday','sub'=>'current day'],
             ['icon'=>'fa-user-check','color'=>'purple','label'=>'Today Unique','id'=>'mTodayUnique','sub'=>'current day'],
+            ['icon'=>'fa-trash-can','color'=>'danger','label'=>'Old Logs','id'=>'mDeleted','sub'=>'older than 30 days','delete'=>true],
         ] as $card)
-        <div class="ta-card ta-metric-card ta-card-{{ $card['color'] }}">
+        <div class="ta-card ta-metric-card ta-card-{{ $card['color'] }} {{ isset($card['delete']) ? 'ta-delete-card' : '' }}" 
+             @if(isset($card['delete'])) onclick="taOpenDeleteModal()" @endif>
             <div class="ta-card-icon ta-icon-{{ $card['color'] }}">
                 <i class="fa-solid {{ $card['icon'] }}"></i>
             </div>
@@ -481,6 +646,59 @@
     </div>
 
 </div>
+
+{{-- Delete Modal --}}
+<div class="ta-modal" id="taDeleteModal">
+    <div class="ta-modal-content">
+        <div class="ta-modal-header">
+            <div class="ta-modal-icon ta-modal-icon-danger">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 class="ta-modal-title">Clear Traffic Logs</h3>
+        </div>
+        <div class="ta-modal-body">
+            <p class="ta-modal-text">
+                Choose which logs you want to delete:
+            </p>
+            
+            <div class="ta-radio-group">
+                <label class="ta-radio-option">
+                    <input type="radio" name="deleteType" value="old" checked>
+                    <div class="ta-radio-label">
+                        <div class="ta-radio-label-title">Delete Old Logs (30+ days)</div>
+                        <div class="ta-radio-label-desc">
+                            Remove logs older than 30 days (<strong id="taOldCount">0</strong> entries)
+                        </div>
+                    </div>
+                </label>
+                
+                <label class="ta-radio-option">
+                    <input type="radio" name="deleteType" value="all">
+                    <div class="ta-radio-label">
+                        <div class="ta-radio-label-title">Delete All Logs</div>
+                        <div class="ta-radio-label-desc">
+                            Permanently remove all traffic logs from database
+                        </div>
+                    </div>
+                </label>
+            </div>
+
+            <div class="ta-modal-warning">
+                <i class="fa-solid fa-exclamation-circle"></i>
+                <strong>Warning:</strong> This action cannot be undone. Deleted logs cannot be recovered.
+            </div>
+        </div>
+        <div class="ta-modal-actions">
+            <button class="ta-modal-btn ta-modal-btn-cancel" onclick="taCloseDeleteModal()">
+                Cancel
+            </button>
+            <button class="ta-modal-btn ta-modal-btn-danger" onclick="taConfirmDelete()">
+                <i class="fa-solid fa-trash"></i> Delete Logs
+            </button>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('js')
@@ -492,6 +710,7 @@
     const ROUTES = {
         data:   '{{ route("admin.traffic.data") }}',
         export: '{{ route("admin.traffic.export") }}',
+        clear:  '{{ route("admin.traffic.clear") }}',
     };
 
     const COLORS = {
@@ -560,13 +779,14 @@
             renderTopUrls(data.top_urls);
             renderRecentLogs(data.recent_logs);
             renderTopIPs(data.top_ips);
+            renderDeletedCount(data.deleted_count || 0);
         } catch (e) {
             console.error('Traffic data load failed', e);
         }
     }
 
     function showSkeletons() {
-        ['mTotal', 'mUnique', 'mAvgTime', 'mErrorRate', 'mToday', 'mTodayUnique'].forEach(id => {
+        ['mTotal', 'mUnique', 'mAvgTime', 'mErrorRate', 'mToday', 'mTodayUnique', 'mDeleted'].forEach(id => {
             const el = document.getElementById(id);
             if (el) { el.className = 'ta-value ta-skeleton ta-skeleton-val'; el.textContent = ''; }
         });
@@ -579,6 +799,11 @@
         setVal('mErrorRate',   s.error_rate + '%');
         setVal('mToday',       fmt(s.today_requests));
         setVal('mTodayUnique', fmt(s.today_unique));
+    }
+
+    function renderDeletedCount(count) {
+        setVal('mDeleted', fmt(count));
+        document.getElementById('taOldCount').textContent = fmt(count);
     }
 
     function setVal(id, val) {
@@ -793,6 +1018,64 @@
             }
         }, 1000);
     }
+
+    // Delete Modal Functions
+    window.taOpenDeleteModal = function() {
+        document.getElementById('taDeleteModal').classList.add('show');
+    };
+
+    window.taCloseDeleteModal = function() {
+        document.getElementById('taDeleteModal').classList.remove('show');
+    };
+
+    window.taConfirmDelete = async function() {
+        const deleteType = document.querySelector('input[name="deleteType"]:checked').value;
+        
+        // Show loading state
+        const btn = event.target;
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Deleting...';
+        btn.disabled = true;
+
+        try {
+            const response = await fetch(ROUTES.clear, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify({ type: deleteType })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Show success message
+                alert(data.message);
+                
+                // Close modal
+                taCloseDeleteModal();
+                
+                // Reload data
+                loadData();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        } catch (error) {
+            alert('Failed to delete logs: ' + error.message);
+        } finally {
+            btn.innerHTML = originalHtml;
+            btn.disabled = false;
+        }
+    };
+
+    // Close modal on outside click
+    document.getElementById('taDeleteModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            taCloseDeleteModal();
+        }
+    });
 
     applyTheme();
     loadData();
