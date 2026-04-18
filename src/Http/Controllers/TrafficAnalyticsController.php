@@ -114,26 +114,4 @@ class TrafficAnalyticsController extends Controller
         }
     }
 
-    private function resolveDateRange(Request $request): array
-    {
-        $range = $request->input('range', '7');
-
-        if ($range === 'today') {
-            return [today()->toDateString(), today()->toDateString(), 'hour'];
-        }
-
-        if ($range === 'custom') {
-            $from = $request->input('date_from', now()->subDays(7)->toDateString());
-            $to   = $request->input('date_to', now()->toDateString());
-            $days = now()->parse($from)->diffInDays(now()->parse($to));
-            return [$from, $to, $days <= 2 ? 'hour' : 'day'];
-        }
-
-        $days = (int) $range;
-        return [
-            now()->subDays($days - 1)->toDateString(),
-            now()->toDateString(),
-            $days <= 1 ? 'hour' : 'day',
-        ];
-    }
 }
